@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { apiBaseUrl } from '../../constants'
 import patientService from "../../services/patients";
+import FemaleIcon from '@mui/icons-material/Female';
+import MaleIcon from '@mui/icons-material/Male';
 
 interface Props {
   patients: Patient[]
@@ -18,8 +20,6 @@ const PatientPage = () => {
   // console.log(patient);
 
   useEffect(() => {
-    void axios.get<void>(`${apiBaseUrl}/ping`);
-
     const fetchPatient = async () => {
       const patient = await patientService.getOne(id);
       setPatient(patient)
@@ -32,7 +32,7 @@ const PatientPage = () => {
     <div>
       <Box>
         <Typography variant='h6'>
-          {patient?.name}
+          {patient?.name} {patient?.gender === "male" ? <MaleIcon /> : <FemaleIcon /> }
         </Typography>
         <Typography>
           ssn: {patient?.ssn}
