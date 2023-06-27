@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Patient } from '../../types'
+import { DiagnoseEntry, Patient } from '../../types'
 import { Box, Typography, List, ListItem, ListItemText, ListItemIcon } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { apiBaseUrl } from '../../constants'
 import patientService from "../../services/patients";
+import diagnoseService from '../../services/diagnoses'
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-interface Props {
-  patients: Patient[]
-}
 
 const PatientPage = () => {
 
   const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState<DiagnoseEntry[]>();
+
   const id = useParams().id;
   // const patient = patients.find(p => p.id === id)
   // console.log(patient);
@@ -26,6 +26,11 @@ const PatientPage = () => {
       setPatient(patient)
     };
     void fetchPatient();
+    const fetchDiagnoses = async () => {
+      const diagnoses = await diagnoseService.getAll();
+      setDiagnoses(diagnoses)
+    };
+    void fetchDiagnoses();
   }, []);
 
 
@@ -41,13 +46,13 @@ const PatientPage = () => {
         <Typography>
           occupation: {patient?.occupation}
         </Typography>
-        <Typography>
+        <Typography variant='h5'>
           entries:
         </Typography>
         {patient?.entries.map(entry => (
           <Box>
             <Typography>
-              {entry.date} {entry.description}
+              {entry.date} - {entry.description}
             </Typography>
             <List>
               {entry.diagnosisCodes?.map(code => (
@@ -55,6 +60,9 @@ const PatientPage = () => {
                   <ListItemIcon><ArrowForwardIosIcon /></ListItemIcon>
                   <ListItemText>
                     {code}
+                  </ListItemText>
+                  <ListItemText>
+                  {diagnoses?.filter(diagnose => diagnose.code === code ? diagnose.name : '').map(diagnose => diagnose.name)}
                   </ListItemText>
                 </ListItem>
               ))}
