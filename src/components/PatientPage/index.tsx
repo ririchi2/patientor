@@ -8,7 +8,7 @@ import patientService from "../../services/patients";
 import diagnoseService from '../../services/diagnoses'
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import EntryDetails from '../EntryDetails'
 
 
 const PatientPage = () => {
@@ -18,7 +18,7 @@ const PatientPage = () => {
 
   const id = useParams().id;
   // const patient = patients.find(p => p.id === id)
-  // console.log(patient);
+  console.log(patient);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -31,6 +31,7 @@ const PatientPage = () => {
       setDiagnoses(diagnoses)
     };
     void fetchDiagnoses();
+
   }, []);
 
 
@@ -50,24 +51,7 @@ const PatientPage = () => {
           entries:
         </Typography>
         {patient?.entries.map(entry => (
-          <Box>
-            <Typography>
-              {entry.date} - {entry.description}
-            </Typography>
-            <List>
-              {entry.diagnosisCodes?.map(code => (
-                <ListItem>
-                  <ListItemIcon><ArrowForwardIosIcon /></ListItemIcon>
-                  <ListItemText>
-                    {code}
-                  </ListItemText>
-                  <ListItemText>
-                  {diagnoses?.filter(diagnose => diagnose.code === code ? diagnose.name : '').map(diagnose => diagnose.name)}
-                  </ListItemText>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
+          <EntryDetails key={entry.id} entry={entry} diagnoses={diagnoses} />
         ))}
       </Box>
     </div>
