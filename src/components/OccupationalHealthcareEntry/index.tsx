@@ -14,18 +14,23 @@ const OccupationalHealthcareEntry: React.FC<{ entry: Entry, diagnoses: DiagnoseE
   return (
     <Box key={entry.id} sx={{
       border: "1px solid black",
+      borderRadius: '0.5em',
+      margin: '0.5em 0em',
     }}>
       <Typography>
         {entry.date}
-        {<WorkIcon sx={{
+        <WorkIcon sx={{
           width: "20px"
-        }} />}
+        }} />
         {entry.employerName}
       </Typography>
       <Typography sx={{
         fontStyle: 'italic',
       }}>
         {entry.description}
+      </Typography>
+      <Typography>
+        Diagnosed by {entry.specialist}
       </Typography>
       <List>
         {entry.diagnosisCodes?.map(code => (
