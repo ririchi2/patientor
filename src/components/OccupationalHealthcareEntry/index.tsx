@@ -6,14 +6,21 @@ import WorkIcon from '@mui/icons-material/Work';
 
 
 const OccupationalHealthcareEntry: React.FC<{ entry: Entry, diagnoses: DiagnoseEntry[] | undefined }> = ({ entry, diagnoses }) => {
+  if (entry.type !== 'OccupationalHealthcare') {
+    // Handle the case when entry.type is not 'OccupationalHealthcare'
+    return null;
+  }
+
   return (
     <Box key={entry.id} sx={{
       border: "1px solid black",
     }}>
       <Typography>
-        {entry.date} - {<WorkIcon sx={{
+        {entry.date}
+        {<WorkIcon sx={{
           width: "20px"
         }} />}
+        {entry.employerName}
       </Typography>
       <Typography sx={{
         fontStyle: 'italic',
