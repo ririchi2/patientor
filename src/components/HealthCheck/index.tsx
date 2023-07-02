@@ -4,7 +4,6 @@ import { Box, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mu
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { yellow } from '@mui/material/colors';
 
 const HealthCheck: React.FC<{ entry: Entry, diagnoses: DiagnoseEntry[] | undefined }> = ({ entry, diagnoses }) => {
   if (entry.type !== 'HealthCheck') {
