@@ -13,12 +13,14 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 
-import { EntryFormValues, HealthCheckRating } from "../../types";
+import { Entry, EntryFormValues, EntryType, HealthCheckRating } from "../../types";
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: EntryFormValues) => void;
 }
+
+const entryTypes: EntryType[] = ["Hospital", "OccupationalHealthcare", "HealthCheck"]
 
 const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [description, setDescription] = useState('');
@@ -26,20 +28,55 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [specialist, setSpecialist] = useState('');
   const [healthCheckRating, setHealthCheckRating] = useState('');
   const [diagnosisCodes, setDiagnosisCodes] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState<EntryType>('Hospital');
+  const [dischargeDate, setDischargeDate] = useState('');
+  const [dischargeCriteria, setDischargeCriteria] = useState('');
+  const [employerName, setEmployerName] = useState('');
 
   const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
     const arrDiagnosisCodes = diagnosisCodes.split('\n');
     const ratingValue = parseInt(healthCheckRating, 10) as HealthCheckRating;
-    onSubmit({
+    const entry: EntryFormValues = {
       description,
       date,
       specialist,
       healthCheckRating: ratingValue,
-      type,
       diagnosisCodes: arrDiagnosisCodes,
-    });
+      type
+    };
+    switch (type) {
+      case "HealthCheck":
+        entry.healthCheckRating = parseInt(
+          healthCheckRating,
+          10
+        ) as HealthCheckRating;
+        break;
+      case "Hospital":
+        entry.discharge = {
+          date: "", // Add discharge date logic here
+          criteria: "", // Add discharge criteria logic here
+        };
+        break;
+      case "OccupationalHealthcare":
+        entry.employerName = ""; // Add employer name logic here
+        entry.sickLeave = {
+          startDate: "", // Add sick leave start date logic here
+          endDate: "", // Add sick leave end date logic here
+        };
+        break;
+      default:
+        break;
+    }
+    console.log(entry)
+    // onSubmit({
+    //   description,
+    //   date,
+    //   specialist,
+    //   healthCheckRating: ratingValue,
+    //   type,
+    //   diagnosisCodes: arrDiagnosisCodes,
+    // });
   };
 
   return (
@@ -75,14 +112,6 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
         </Box>
         <Box mt={2}>
           <TextField
-            label="HealthCheck rating"
-            fullWidth
-            value={healthCheckRating}
-            onChange={({ target }) => setHealthCheckRating(target.value)}
-          />
-        </Box>
-        <Box mt={2}>
-          <TextField
             label="Diagnosis codes"
             multiline
             maxRows="4"
@@ -94,7 +123,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
         <Box mt={2}>
           <FormControl fullWidth>
             <InputLabel>Type</InputLabel>
-            <Select value={type} onChange={(e) => setType(e.target.value as EntryType)}>
+            <Select value={type} onChange={(e) => setType(e.target.value as EntryType)} label="Type">
               {entryTypes.map((entryType) => (
                 <MenuItem key={entryType} value={entryType}>
                   {entryType}
@@ -103,6 +132,72 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             </Select>
           </FormControl>
         </Box>
+        {
+          type === "HealthCheck" &&
+          <Box mt={2}>
+            <TextField
+              label="HealthCheck rating"
+              fullWidth
+              value={healthCheckRating}
+              onChange={({ target }) => setHealthCheckRating(target.value)}
+            />
+          </Box>
+        }
+        {
+          type === "Hospital" && (
+            <>
+              <Box mt={2}>
+                <TextField
+                  label="Discharge Date"
+                  placeholder="YYYY-MM-DD"
+                  fullWidth
+                  value={dischargeDate} // Add discharge date value here
+                  onChange={({ target }) => setDischargeDate(target.value)} // Add discharge date change handler here
+                />
+              </Box>
+              <Box mt={2}>
+                <TextField
+                  label="Discharge Criteria"
+                  fullWidth
+                  value={dischargeCriteria} // Add discharge criteria value here
+                  onChange={({ target }) => setDischargeCriteria(target.value)} // Add discharge criteria change handler here
+                />
+              </Box>
+            </>
+          )
+        }
+        {
+          type === "OccupationalHealthcare" && (
+            <>
+              <Box mt={2}>
+                <TextField
+                  label="Employer Name"
+                  fullWidth
+                  value={employerName} // Add employer name value here
+                  onChange={({ target }) => setEmployerName(target.value)} // Add employer name change handler here
+                />
+              </Box>
+              {/* <Box mt={2}>
+                <TextField
+                  label="Sick Leave Start Date"
+                  placeholder="YYYY-MM-DD"
+                  fullWidth
+                  value={""} // Add sick leave start date value here
+                  onChange={({ target }) => { }} // Add sick leave start date change handler here
+                />
+              </Box>
+              <Box mt={2}>
+                <TextField
+                  label="Sick Leave End Date"
+                  placeholder="YYYY-MM-DD"
+                  fullWidth
+                  value={""} // Add sick leave end date value here
+                  onChange={({ target }) => { }} // Add sick leave end date change handler here
+                />
+              </Box> */}
+            </>
+          )
+        }
         <Box mt={3}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
