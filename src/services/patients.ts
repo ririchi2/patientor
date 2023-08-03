@@ -28,7 +28,7 @@ const getOne = async (id: string | undefined) => {
 
 const createEntry = async (id: string, object: EntryFormValues) => {
   const { data } = await axios.post<Entry>(
-    `${apiBaseUrl}/${id}/entries`,
+    `${apiBaseUrl}/patients/${id}/entries`,
     object
   );
   return data;

@@ -31,6 +31,7 @@ const PatientPage = () => {
     try {
       const entry = await patientService.createEntry(patient?.id, values)
       setModalOpen(false);
+      setPatient({ ...patient, entries: [...patient.entries, entry]})
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "string") {
@@ -45,7 +46,7 @@ const PatientPage = () => {
         setError("Unknown error");
       }
     }
-  }
+  };
 
   const id = useParams().id;
 
@@ -75,18 +76,18 @@ const PatientPage = () => {
         <strong>Occupation:</strong> {patient?.occupation}
       </Typography>
       <Box display="flex" justifyContent="space-between">
-      <Typography variant="h5" gutterBottom>
-        Entries:
-      </Typography>
-      <AddEntryModal
-        modalOpen={modalOpen}
-        onSubmit={submitNewEntry}
-        error={error}
-        onClose={closeModal}
-      />
-      <Button variant="contained" onClick={() => openModal()}>
-        Add New Entry
-      </Button>
+        <Typography variant="h5" gutterBottom>
+          Entries:
+        </Typography>
+        <AddEntryModal
+          modalOpen={modalOpen}
+          onSubmit={submitNewEntry}
+          error={error}
+          onClose={closeModal}
+        />
+        <Button variant="contained" onClick={() => openModal()}>
+          Add New Entry
+        </Button>
       </Box>
       <Grid container spacing={2}>
         {patient?.entries.map(entry => (

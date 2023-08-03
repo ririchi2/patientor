@@ -36,47 +36,35 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
     const arrDiagnosisCodes = diagnosisCodes.split('\n');
-    const ratingValue = parseInt(healthCheckRating, 10) as HealthCheckRating;
     const entry: EntryFormValues = {
       description,
       date,
       specialist,
-      healthCheckRating: ratingValue,
       diagnosisCodes: arrDiagnosisCodes,
       type
     };
     switch (type) {
       case "HealthCheck":
-        entry.healthCheckRating = parseInt(
-          healthCheckRating,
-          10
-        ) as HealthCheckRating;
+        entry.healthCheckRating = parseInt(healthCheckRating, 10) as HealthCheckRating;
         break;
       case "Hospital":
         entry.discharge = {
-          date: "", // Add discharge date logic here
-          criteria: "", // Add discharge criteria logic here
+          date: dischargeDate,
+          criteria: dischargeCriteria,
         };
         break;
       case "OccupationalHealthcare":
-        entry.employerName = ""; // Add employer name logic here
-        entry.sickLeave = {
-          startDate: "", // Add sick leave start date logic here
-          endDate: "", // Add sick leave end date logic here
-        };
+        entry.employerName = employerName;
+        // entry.sickLeave = {
+        //   startDate: "",
+        //   endDate: "",
+        // };
         break;
       default:
         break;
     }
     console.log(entry)
-    // onSubmit({
-    //   description,
-    //   date,
-    //   specialist,
-    //   healthCheckRating: ratingValue,
-    //   type,
-    //   diagnosisCodes: arrDiagnosisCodes,
-    // });
+    onSubmit(entry);
   };
 
   return (
@@ -133,15 +121,15 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           </FormControl>
         </Box>
         {
-          type === "HealthCheck" &&
-          <Box mt={2}>
-            <TextField
-              label="HealthCheck rating"
-              fullWidth
-              value={healthCheckRating}
-              onChange={({ target }) => setHealthCheckRating(target.value)}
-            />
-          </Box>
+          type === "HealthCheck" ?
+            <Box mt={2}>
+              <TextField
+                label="HealthCheck rating"
+                fullWidth
+                value={healthCheckRating}
+                onChange={({ target }) => setHealthCheckRating(target.value)}
+              />
+            </Box> : null
         }
         {
           type === "Hospital" && (
