@@ -69,7 +69,7 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
             <TableCell>Health Rating</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody sx={{ cursor: "pointer" }}>
           {Object.values(patients).map((patient: Patient) => (
               <TableRow key={patient.id} onClick={() => handleCLick(patient)}>
                 <TableCell>{patient.name}</TableCell>
