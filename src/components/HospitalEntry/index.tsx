@@ -10,7 +10,7 @@ const HospitalEntry: React.FC<{ entry: Entry, diagnoses: DiagnoseEntry[] | undef
       margin: '0.5em 0em',
     }}>
       <CardContent>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>
+        <Typography variant="subtitle1" sx={{ mb: 2 }}>
           {entry.date} - {entry.description}
         </Typography>
 
@@ -19,7 +19,7 @@ const HospitalEntry: React.FC<{ entry: Entry, diagnoses: DiagnoseEntry[] | undef
             {entry.diagnosisCodes.map(code => (
               <ListItem key={code}>
                 <ListItemIcon>
-                  <ArrowForwardIosIcon />
+                  <ArrowForwardIosIcon sx={{ width: "20px"}} />
                 </ListItemIcon>
                 <ListItemText>
                   {code}{' '}

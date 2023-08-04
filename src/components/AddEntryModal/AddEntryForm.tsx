@@ -10,10 +10,9 @@ import {
   Select,
   TextField,
   Typography,
-  SelectChangeEvent,
 } from '@mui/material';
 
-import { Entry, EntryFormValues, EntryType, HealthCheckRating } from "../../types";
+import { EntryFormValues, EntryType, HealthCheckRating } from "../../types";
 
 interface Props {
   onCancel: () => void;

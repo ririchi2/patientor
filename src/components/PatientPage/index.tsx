@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DiagnoseEntry, EntryFormValues, Patient } from '../../types';
-import { Box, Typography, Grid, Button } from '@mui/material';
+import { Box, Typography, Grid, Button, Divider } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import patientService from '../../services/patients';
 import diagnoseService from '../../services/diagnoses';
@@ -75,20 +75,20 @@ const PatientPage = () => {
       <Typography variant="body1" gutterBottom>
         <strong>Occupation:</strong> {patient?.occupation}
       </Typography>
-      <Box display="flex" justifyContent="space-between">
-        <Typography variant="h5" gutterBottom>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h5">
           Entries:
         </Typography>
-        <AddEntryModal
+        <Button variant="contained" onClick={() => openModal()}>
+          +
+        </Button>
+      </Box>
+      <AddEntryModal
           modalOpen={modalOpen}
           onSubmit={submitNewEntry}
           error={error}
           onClose={closeModal}
         />
-        <Button variant="contained" onClick={() => openModal()}>
-          Add New Entry
-        </Button>
-      </Box>
       <Grid container spacing={2}>
         {patient?.entries.map(entry => (
           <Grid key={entry.id} item xs={12}>

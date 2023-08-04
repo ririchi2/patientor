@@ -16,14 +16,16 @@ const OccupationalHealthcareEntry: React.FC<{ entry: Entry, diagnoses: DiagnoseE
       margin: '0.5em 0em',
     }}>
       <CardContent>
-        <Box display="flex" alignItems="center" mb={1}>
+        <Box display="flex" alignItems="center" mb={2}>
           <Typography variant="subtitle1" sx={{ flex: 1 }}>
             {entry.date}
           </Typography>
-          <WorkIcon sx={{ width: "20px", ml: 1 }} />
-          <Typography variant="subtitle1" sx={{ ml: 1}}>
-            {entry.employerName}
-          </Typography>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <WorkIcon sx={{ width: "20px" }} />
+            <Typography variant="body2">
+              {entry.employerName}
+            </Typography>
+          </Box>
         </Box>
 
         <Typography variant="body1" sx={{ fontStyle: 'italic', mb: 1 }}>
@@ -39,7 +41,7 @@ const OccupationalHealthcareEntry: React.FC<{ entry: Entry, diagnoses: DiagnoseE
             {entry.diagnosisCodes.map(code => (
               <ListItem key={code}>
                 <ListItemIcon>
-                  <ArrowForwardIosIcon />
+                  <ArrowForwardIosIcon sx={{ width: "20px"}} />
                 </ListItemIcon>
                 <ListItemText>
                   {code}{' '}

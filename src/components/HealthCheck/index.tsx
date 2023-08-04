@@ -32,7 +32,7 @@ const HealthCheck: React.FC<{ entry: Entry, diagnoses: DiagnoseEntry[] | undefin
       margin: '0.5em 0em',
     }}>
       <CardContent>
-        <Box display="flex" alignItems="center" mb={1}>
+        <Box display="flex" alignItems="center" mb={2}>
           <Typography variant="subtitle1" sx={{ flex: 1 }}>
             {entry.date}
           </Typography>
@@ -43,6 +43,11 @@ const HealthCheck: React.FC<{ entry: Entry, diagnoses: DiagnoseEntry[] | undefin
           {entry.description}
         </Typography>
 
+
+        <Typography variant="body1" mb={1}>
+          Diagnosed by {entry.specialist}
+        </Typography>
+
         <Box display="flex" alignItems="center" mb={1}>
           <FavoriteIcon sx={{ color: getHealthCheckRatingColor(entry.healthCheckRating), mr: 1 }} />
           <Typography variant="body1" color="textSecondary">
@@ -50,16 +55,12 @@ const HealthCheck: React.FC<{ entry: Entry, diagnoses: DiagnoseEntry[] | undefin
           </Typography>
         </Box>
 
-        <Typography variant="body1">
-          Diagnosed by {entry.specialist}
-        </Typography>
-
         {entry.diagnosisCodes && (
           <List>
             {entry.diagnosisCodes.map(code => (
               <ListItem key={code}>
                 <ListItemIcon>
-                  <ArrowForwardIosIcon />
+                  <ArrowForwardIosIcon sx={{ width: "20px"}} />
                 </ListItemIcon>
                 <ListItemText>
                   {code}{' '}
