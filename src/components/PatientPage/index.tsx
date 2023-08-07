@@ -88,6 +88,7 @@ const PatientPage = () => {
           onSubmit={submitNewEntry}
           error={error}
           onClose={closeModal}
+          diagnoses={diagnoses}
         />
       <Grid container spacing={2}>
         {patient?.entries.map(entry => (

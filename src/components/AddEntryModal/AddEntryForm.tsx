@@ -3,30 +3,37 @@ import { useState, SyntheticEvent } from "react";
 import {
   Box,
   Button,
+  Checkbox,
   FormControl,
   Grid,
   InputLabel,
+  ListItemIcon,
+  ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
   Typography,
 } from '@mui/material';
 
-import { EntryFormValues, EntryType, HealthCheckRating } from "../../types";
+import { DiagnoseEntry, EntryFormValues, EntryType, HealthCheckRating } from "../../types";
+import diagnoses from "../../services/diagnoses";
+import { CheckBox } from "@mui/icons-material";
 
 interface Props {
   onCancel: () => void;
   onSubmit: (values: EntryFormValues) => void;
+  diagnoses?: DiagnoseEntry[];
 }
 
 const entryTypes: EntryType[] = ["Hospital", "OccupationalHealthcare", "HealthCheck"]
 
-const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
+const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [specialist, setSpecialist] = useState('');
   const [healthCheckRating, setHealthCheckRating] = useState('');
-  const [diagnosisCodes, setDiagnosisCodes] = useState('');
+  const [diagnosisCodes, setDiagnosisCodes] = useState(['']);
   const [type, setType] = useState<EntryType>('Hospital');
   const [dischargeDate, setDischargeDate] = useState('');
   const [dischargeCriteria, setDischargeCriteria] = useState('');
@@ -34,12 +41,12 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
 
   const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
-    const arrDiagnosisCodes = diagnosisCodes.split('\n');
+    // const arrDiagnosisCodes = diagnosisCodes.split('\n');
     const entry: EntryFormValues = {
       description,
       date,
       specialist,
-      diagnosisCodes: arrDiagnosisCodes,
+      diagnosisCodes,
       type
     };
     switch (type) {
@@ -98,6 +105,29 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
           />
         </Box>
         <Box mt={2}>
+          <FormControl fullWidth>
+            <InputLabel id="diagnosis-codes-label">Diagnosis Codes</InputLabel>
+            <Select
+              multiple
+              value={diagnosisCodes}
+              input={<OutlinedInput label="Diagnosis Codes" />}
+              onChange={(e) => setDiagnosisCodes(e.target.value as string[])}
+              label="Diagnosis Codes"
+              renderValue={(selected) => selected.join(', ')} // You can customize the way selected values are displayed
+            >
+              {diagnoses?.map((diag) => (
+                <MenuItem key={diag.name} value={diag.code}>
+                  <ListItemIcon>
+                    <Checkbox checked={diagnosisCodes.includes(diag.code)} />
+                  </ListItemIcon>
+                  <ListItemText primary={diag.name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+        </Box>
+        {/* <Box mt={2}>
           <TextField
             label="Diagnosis codes"
             multiline
@@ -106,7 +136,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
             value={diagnosisCodes}
             onChange={({ target }) => setDiagnosisCodes(target.value)}
           />
-        </Box>
+        </Box> */}
         <Box mt={2}>
           <FormControl fullWidth>
             <InputLabel>Type</InputLabel>
