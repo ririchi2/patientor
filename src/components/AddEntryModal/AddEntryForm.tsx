@@ -17,8 +17,9 @@ import {
 } from '@mui/material';
 
 import { DiagnoseEntry, EntryFormValues, EntryType, HealthCheckRating } from "../../types";
-import diagnoses from "../../services/diagnoses";
-import { CheckBox } from "@mui/icons-material";
+
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from 'dayjs'
 
 interface Props {
   onCancel: () => void;
@@ -88,13 +89,17 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
           />
         </Box>
         <Box mt={2}>
-          <TextField
-            label="Date"
-            placeholder="YYYY-MM-DD"
-            fullWidth
-            value={date}
-            onChange={({ target }) => setDate(target.value)}
-          />
+          <FormControl fullWidth>
+            <DatePicker
+              label="Date"
+              value={date}
+              onChange={(newValue) => {
+                const formattedDate = dayjs(newValue).format('YYYY-MM-DD');
+                console.log(formattedDate);
+                setDate(formattedDate);
+              }}
+            />
+          </FormControl>
         </Box>
         <Box mt={2}>
           <TextField
@@ -116,7 +121,7 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
               renderValue={(selected) => selected.join(', ')} // You can customize the way selected values are displayed
             >
               {diagnoses?.map((diag) => (
-                <MenuItem key={diag.name} value={diag.code}>
+                <MenuItem key={diag.name} value={diag.code} sx={{ width: "20%"}}>
                   <ListItemIcon>
                     <Checkbox checked={diagnosisCodes.includes(diag.code)} />
                   </ListItemIcon>

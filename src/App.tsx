@@ -10,6 +10,10 @@ import patientService from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
 import PatientPage from "./components/PatientPage";
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+
+
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
 
@@ -24,28 +28,30 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
-      <Router>
-        <Container>
-          <Typography variant="h3" style={{ marginBottom: "0.5em" }}>
-            Patientor
-          </Typography>
-          <Button component={Link} to="/" variant="contained" color="primary">
-            Home
-          </Button>
-          <Divider hidden />
-          <Routes>
-            <Route path="/" element={
-              <PatientListPage
-                patients={patients}
-                setPatients={setPatients}
-              />} />
-            <Route path="/:id" element= {
-              <PatientPage />} />
-          </Routes>
-        </Container>
-      </Router>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div className="App">
+        <Router>
+          <Container>
+            <Typography variant="h3" style={{ marginBottom: "0.5em" }}>
+              Patientor
+            </Typography>
+            <Button component={Link} to="/" variant="contained" color="primary">
+              Home
+            </Button>
+            <Divider hidden />
+            <Routes>
+              <Route path="/" element={
+                <PatientListPage
+                  patients={patients}
+                  setPatients={setPatients}
+                />} />
+              <Route path="/:id" element={
+                <PatientPage />} />
+            </Routes>
+          </Container>
+        </Router>
+      </div>
+    </LocalizationProvider>
   );
 };
 
