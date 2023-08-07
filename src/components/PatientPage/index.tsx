@@ -31,7 +31,7 @@ const PatientPage = () => {
     try {
       const entry = await patientService.createEntry(patient?.id, values)
       setModalOpen(false);
-      setPatient({ ...patient, entries: [...patient.entries, entry]})
+      setPatient({ ...patient, entries: [...patient.entries, entry]}); // Updating patients entries
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "string") {
@@ -39,7 +39,7 @@ const PatientPage = () => {
           console.error(message);
           setError(message);
         } else {
-          setError("Unrecognized axios error");
+          setError("Ha habido un error con el servidor.");
         }
       } else {
         console.error("Unknown error", e);

@@ -31,7 +31,7 @@ const entryTypes: EntryType[] = ["Hospital", "OccupationalHealthcare", "HealthCh
 
 const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState<null | string>(null);
   const [specialist, setSpecialist] = useState('');
   const [healthCheckRating, setHealthCheckRating] = useState('');
   const [diagnosisCodes, setDiagnosisCodes] = useState(['']);
@@ -42,10 +42,10 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
 
   const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
-    // const arrDiagnosisCodes = diagnosisCodes.split('\n');
+    const formattedDate = date ? dayjs(date).format('YYYY-MM-DD') : ''; // Convert null to empty string
     const entry: EntryFormValues = {
       description,
-      date,
+      date: formattedDate,
       specialist,
       diagnosisCodes,
       type
@@ -121,7 +121,7 @@ const AddEntryForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
               renderValue={(selected) => selected.join(', ')} // You can customize the way selected values are displayed
             >
               {diagnoses?.map((diag) => (
-                <MenuItem key={diag.name} value={diag.code} sx={{ width: "20%"}}>
+                <MenuItem key={diag.name} value={diag.code}>
                   <ListItemIcon>
                     <Checkbox checked={diagnosisCodes.includes(diag.code)} />
                   </ListItemIcon>
